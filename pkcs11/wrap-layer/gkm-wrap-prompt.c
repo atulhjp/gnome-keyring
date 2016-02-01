@@ -511,16 +511,8 @@ get_unlock_options_from_prompt (GkmWrapPrompt *self, CK_ULONG_PTR n_options)
 static void
 set_unlock_options_on_prompt (GkmWrapPrompt *self, CK_ATTRIBUTE_PTR options, CK_ULONG n_options)
 {
-	gboolean chosen = FALSE;
-	gboolean bval;
-
 	g_assert (GKM_IS_WRAP_PROMPT (self));
-	g_assert (options || !n_options);
-
-	if (gkm_attributes_find_boolean (options, n_options, CKA_GNOME_TRANSIENT, &bval))
-		chosen = bval;
-
-	gcr_prompt_set_choice_chosen (GCR_PROMPT (self), chosen);
+	g_assert (options || !n_options);	
 }
 
 static CK_ATTRIBUTE_PTR
@@ -608,6 +600,7 @@ setup_unlock_keyring_other (GkmWrapPrompt *self,
 {
 	GcrPrompt *prompt;
 	const gchar *choice;
+	const gboolean chosen = FALSE;
 	gchar *text;
 
 	g_assert (GKM_IS_WRAP_PROMPT (self));
@@ -627,6 +620,7 @@ setup_unlock_keyring_other (GkmWrapPrompt *self,
 	if (gkm_wrap_login_is_usable ())
 		choice = _("Automatically unlock this keyring whenever I'm logged in");
 	gcr_prompt_set_choice_label (prompt, choice);
+	gcr_prompt_set_choice_chosen (GCR_PROMPT(self), chosen);
 	gcr_prompt_set_continue_label (prompt, _("Unlock"));
 }
 
